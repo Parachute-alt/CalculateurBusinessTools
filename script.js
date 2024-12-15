@@ -1,43 +1,36 @@
 
-function calculerRevenusPub() {
-    let investissement = parseFloat(document.getElementById('investPub').value);
-    let plateforme = document.getElementById('plateforme').value;
-
-    const facteur = { meta: 3, linkedin: 4, twitter: 2, tiktok: 5, youtube: 3.5 };
-    let revenu = investissement * (facteur[plateforme] || 1);
-    afficherResultat('resultatPub', revenu);
+function calculateAdRevenue() {
+    const investment = document.getElementById('adInvestment').value;
+    const result = investment * 3; // Hypothèse de rendement x3
+    document.getElementById('adResult').innerText = `Résultat : ${formatCurrency(result)}`;
+    updateTotalRevenue();
 }
 
-function calculerRevenusSEO() {
-    let investissement = parseFloat(document.getElementById('investSEO').value);
-    let revenu = investissement * 4.5; // Hypothèse basée sur des tendances actuelles.
-    afficherResultat('resultatSEO', revenu);
+function calculateSEORevenue() {
+    const investment = document.getElementById('seoInvestment').value;
+    const result = investment * 4; // Hypothèse de rendement x4
+    document.getElementById('seoResult').innerText = `Résultat : ${formatCurrency(result)}`;
+    updateTotalRevenue();
 }
 
-function calculerROI() {
-    let investissement = parseFloat(document.getElementById('investROI').value);
-    let revenu = parseFloat(document.getElementById('revenuROI').value);
-
-    if (investissement > 0) {
-        let roi = ((revenu - investissement) / investissement) * 100;
-        document.getElementById('resultatROI').textContent = `Le ROI est de ${roi.toFixed(2)}%.`;
+function calculateROI() {
+    const investment = document.getElementById('roiInvestment').value;
+    const revenue = document.getElementById('roiRevenue').value;
+    if (investment > 0) {
+        const roi = ((revenue - investment) / investment) * 100;
+        document.getElementById('roiResult').innerText = `Résultat : ${roi.toFixed(2)} %`;
     } else {
-        alert('Veuillez entrer un montant d\'investissement valide.');
+        document.getElementById('roiResult').innerText = "Veuillez entrer un investissement valide.";
     }
 }
 
-function calculerRevenusTotaux() {
-    const revenusPub = parseFloat(document.getElementById('resultatPub').textContent) || 0;
-    const revenusSEO = parseFloat(document.getElementById('resultatSEO').textContent) || 0;
-    afficherResultat('resultatTotal', revenusPub + revenusSEO);
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(amount);
 }
 
-function afficherResultat(elementId, montant) {
-    const euro = montant.toFixed(2);
-    const cad = (montant * 1.5).toFixed(2);
-    const usd = (montant * 1.1).toFixed(2);
-
-    document.getElementById(elementId).innerHTML = `
-        ${euro} € | ${cad} CAD | ${usd} USD
-    `;
+function updateTotalRevenue() {
+    const adInvestment = parseFloat(document.getElementById('adInvestment').value) || 0;
+    const seoInvestment = parseFloat(document.getElementById('seoInvestment').value) || 0;
+    const total = adInvestment * 3 + seoInvestment * 4; // Calcul basé sur les hypothèses précédentes
+    document.getElementById('totalRevenue').innerText = formatCurrency(total);
 }
